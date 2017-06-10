@@ -125,23 +125,29 @@ class PokerPlayerAPI(Resource):
                 elif allCards[i][1] == 'c':
                     clubs.append(allCards[i][1])
 
+
+            #straight flush & flush
             if len(spades) >= 5:
                 if self.straightFlush(self, spades):
                     return data['min_bid'] * 6
+                return data['min_bid'] * 3
 
             if len(hearts) >= 5:
                 if self.straightFlush(self, hearts):
                     return data['min_bid'] * 6
+                return data['min_bid'] * 3
 
             if len(diamonds) >= 5:
                 if self.straightFlush(self, diamonds):
                     return data['min_bid'] * 6
+                return data['min_bid'] * 3
 
             if len(clubs) >= 5:
                 if self.straightFlush(self, clubs):
                     return data['min_bid'] * 6
+                return data['min_bid'] * 3
 
-            #straight flush
+
 
 
             #four of a Kind
