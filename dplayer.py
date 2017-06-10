@@ -9,7 +9,7 @@
 # Configuration
 # You need to change the setting according to your environment
 gregister_url='http://192.168.0.5:5001'
-glocalip_adr='127.0.0.1'
+glocalip_adr='192.168.0.19'
 
 # -----------------------------------------------------------
 
@@ -68,22 +68,35 @@ class PokerPlayerAPI(Resource):
     def __get_bid(self, data):
 
         allCards = data['hand'] + data['board']
+        howManyBoardCards = len(allCards)
 
         searchRank = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"]
 
-        howManyBoardCards = len(allCards)
+        #straight
+        
 
-        #for i in range(0, 2+howManyBoardCards):
+        #three of a kind
+        for i in range(0, howManyBoardCards):
+            for j in range(0, howManyBoardCards):
+                for k in range(0, howManyBoardCards):
+                    if allCards[i][0] == allCards[j][0] && allCards[j][0] == allCards[k][0]
+                        return data['min_bid'] * 3
 
-
+        #one pair and two pairs
         for i in range(0, howManyBoardCards):
             for j in range(1, howManyBoardCards):
-                if allCards['rank'][i] == allCards['rank'][j]:
+                if allCards[i][0] == allCards[j][0]:
+                    allCards.pop([i])
+                    allCards.pop([j])
+                    howManyBoardCards = len(allCards)
+                    for k in range(0, howManyBoardCards):
+                        for l in range(0, howManyBoardCards):
+                            if allCards[k][0] == allCards[l][0]:
+                                return data['min_bid'] * 2
                     return data['min_bid']
 
 
-
-        return 0
+        return -1
     # dispatch incoming get commands
     def get(self, command_id):
 
