@@ -66,13 +66,13 @@ class PokerPlayerAPI(Resource):
     # @return a dictionary containing the following values
     #         bid  : a number between 0 and max_bid
 
-    def straightFlush(self, cards):
+    def straightFlush(self, cards, indicator = 0):
         length = len(cards)
         searchRank = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"]
         cardList = []
         howManyInARow = 0
         for i in range(0, length):
-            for j in range(0, 13):
+            for j in range(indicator, 13):
                 if cards[i] == searchRank[j]:
                     nextPosition = j +1
                     for k in range(0, length):
@@ -126,14 +126,18 @@ class PokerPlayerAPI(Resource):
                     clubs.append(allCards[i][1])
 
 
-            #straight flush & flush
+            ##straight flush and flush
             if len(spades) >= 5:
                 if self.straightFlush(self, spades):
                     return data['min_bid'] * 6
                 return data['min_bid'] * 3
 
+
             if len(hearts) >= 5:
-                if self.straightFlush(self, hearts):
+                #royal flush
+                if self.straightFlush(self, hearts, 8):
+                    return data['min_bid'] * 8
+                elif self.straightFlush(self, hearts):
                     return data['min_bid'] * 6
                 return data['min_bid'] * 3
 
@@ -177,8 +181,9 @@ class PokerPlayerAPI(Resource):
 
             #flush
 
-            # straight
-
+            #straight
+            if self.straightFlush(self, allCards):
+                return data['min_bid'] * 4
 
             #three of a kind
             for i in range(0, howManyCards):
