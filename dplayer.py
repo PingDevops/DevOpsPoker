@@ -70,8 +70,8 @@ class PokerPlayerAPI(Resource):
         for i in range(0, howManyCards):
             for j in range(1, howManyCards):
                 if allCards[i][0] == allCards[j][0]:
-                    allCards.pop([i])
-                    allCards.pop([j])
+                    allCards.remove(allCards[i][0])
+                    allCards.remove(allCards[j][0])
                     howManyCards = len(allCards)
                     for k in range(0, howManyCards):
                         for l in range(0, howManyCards):
@@ -96,9 +96,9 @@ class PokerPlayerAPI(Resource):
                 for k in range(2, howManyCards):
                     if allCards[k][0] == allCards[j][0]:
                         if allCards[j][0] == allCards[i][0]:
-                            allCards.pop([i])
-                            allCards.pop([j])
-                            allCards.pop([k])
+                            allCards.remove(allCards[i][0])
+                            allCards.remove(allCards[j][0])
+                            allCards.remove(allCards[k][0])
                             howManyCards = len(allCards)
                             for i in range(0, howManyCards):
                                 for j in range(1, howManyCards):
