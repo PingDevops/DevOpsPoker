@@ -129,26 +129,35 @@ class PokerPlayerAPI(Resource):
             ##straight flush and flush
             if len(spades) >= 5:
                 if self.straightFlush(spades):
+                    print('Straigh Flush')
                     return data['min_bid'] * 6
+                print('Flush')
                 return data['min_bid'] * 3
 
 
             if len(hearts) >= 5:
                 #royal flush
                 if self.straightFlush(self, hearts, 8):
+                    print('Royal Flush')
                     return data['min_bid'] * 8
                 elif self.straightFlush(hearts):
+                    print('Straight Flush')
                     return data['min_bid'] * 6
+                print('Flush')
                 return data['min_bid'] * 3
 
             if len(diamonds) >= 5:
                 if self.straightFlush(diamonds):
+                    print('Straigh Flush')
                     return data['min_bid'] * 6
+                print('Flush')
                 return data['min_bid'] * 3
 
             if len(clubs) >= 5:
                 if self.straightFlush(self, clubs):
+                    print('Straigh Flush')
                     return data['min_bid'] * 6
+                print('Flush')
                 return data['min_bid'] * 3
 
 
@@ -162,6 +171,7 @@ class PokerPlayerAPI(Resource):
                             if allCards[l][0] == allCards[k][0]:
                                 if allCards[k][0] == allCards[j][0]:
                                     if allCards[j][0] == allCards[i][0]:
+                                        print('Four of a Kind')
                                         return data['min_bid'] * 5
 
             #full house
@@ -177,12 +187,12 @@ class PokerPlayerAPI(Resource):
                                 for i in range(0, howManyCards):
                                     for j in range(1, howManyCards):
                                         if allCards[i][0] == allCards[j][0]:
+                                            print('Full House')
                                             return data['min_bid'] * 4
-
-            #flush
 
             #straight
             if self.straightFlush(allCards):
+                print('Straight')
                 return data['min_bid'] * 4
 
             #three of a kind
@@ -191,6 +201,7 @@ class PokerPlayerAPI(Resource):
                     for k in range(0, howManyCards):
                         if allCards[k][0] == allCards[j][0]:
                             if allCards[j][0] == allCards[i][0]:
+                                print('Three of a Kind')
                                 return data['min_bid'] * 3
 
 
@@ -204,7 +215,9 @@ class PokerPlayerAPI(Resource):
                         for k in range(0, howManyCards):
                             for l in range(0, howManyCards):
                                 if allCards[k][0] == allCards[l][0]:
+                                    print('A Pair of Two')
                                     return data['min_bid'] * 2
+                        print('A Pair of One')
                         return data['min_bid']
         except ValueError:
             return data['min_bid']
