@@ -65,51 +65,133 @@ class PokerPlayerAPI(Resource):
     #
     # @return a dictionary containing the following values
     #         bid  : a number between 0 and max_bid
+
+    def straightFlush(self, cards):
+        length = len(cards)
+        searchRank = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"]
+        cardList = []
+        howManyInARow = 0
+        for i in range(0, length):
+            for j in range(0, 13):
+                if cards[i] == searchRank[j]:
+                    nextPosition = j +1
+                    for k in range(0, length):
+                        if cards[k] == searchRank[nextPosition]:
+                            nextPosition + 1
+                            for k in range(0, length):
+                                if cards[k] == searchRank[nextPosition]:
+                                    nextPosition + 1
+                                    for k in range(0, length):
+                                        if cards[k] == searchRank[nextPosition]:
+                                            nextPosition + 1
+                                            for k in range(0, length):
+                                                if cards[k] == searchRank[nextPosition]:
+                                                    return True
+
+
+
+
+
+
+        return 0
+
+
     def __get_bid(self, data):
         whichRound = len(data['board'])
 
         allCards = data['hand'] + data['board']
-        howManyBoardCards = len(allCards)
+        howManyCards = len(allCards)
 
         searchRank = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"]
+        spades = []
+        hearts = []
+        diamonds = []
+        clubs = []
+
+
+
 
 
         print(data)
 
         try:
+            for i in range(0, howManyCards):
+                if allCards[i][1] == 's':
+                    spades.append(allCards[i][1])
+                elif allCards[i][1] == 'h':
+                    hearts.append(allCards[i][1])
+                elif allCards[i][1] == 'd':
+                    diamonds.append(allCards[i][1])
+                elif allCards[i][1] == 'c':
+                    clubs.append(allCards[i][1])
+
+            if len(spades) >= 5:
+                if self.straightFlush(self, spades):
+                    return data['min_bid'] * 6
+
+            if len(hearts) >= 5:
+                if self.straightFlush(self, hearts):
+                    return data['min_bid'] * 6
+
+            if len(diamonds) >= 5:
+                if self.straightFlush(self, diamonds):
+                    return data['min_bid'] * 6
+
+            if len(clubs) >= 5:
+                if self.straightFlush(self, clubs):
+                    return data['min_bid'] * 6
+
+            #straight flush
+
+
             #four of a Kind
-            for i in range(0, howManyBoardCards):
-                for j in range(0, howManyBoardCards):
-                    for k in range(0, howManyBoardCards):
-                        for l in range(0, howManyBoardCards):
+            for i in range(0, howManyCards):
+                for j in range(0, howManyCards):
+                    for k in range(0, howManyCards):
+                        for l in range(0, howManyCards):
                             if allCards[l][0] == allCards[k][0]:
                                 if allCards[k][0] == allCards[j][0]:
                                     if allCards[j][0] == allCards[i][0]:
-                                        return data['max_bid']
+                                        return data['min_bid'] * 5
+
             #full house
+            for i in range(0, howManyCards):
+                for j in range(0, howManyCards):
+                    for k in range(0, howManyCards):
+                        if allCards[k][0] == allCards[j][0]:
+                            if allCards[j][0] == allCards[i][0]:
+                                allCards.pop([i])
+                                allCards.pop([j])
+                                allCards.pop([k])
+                                howManyCards = len(allCards)
+                                for i in range(0, howManyCards):
+                                    for j in range(1, howManyCards):
+                                        if allCards[i][0] == allCards[j][0]:
+                                            return data['min_bid'] * 4
 
             #flush
+
             # straight
 
 
             #three of a kind
-            for i in range(0, howManyBoardCards):
-                for j in range(0, howManyBoardCards):
-                    for k in range(0, howManyBoardCards):
+            for i in range(0, howManyCards):
+                for j in range(0, howManyCards):
+                    for k in range(0, howManyCards):
                         if allCards[k][0] == allCards[j][0]:
                             if allCards[j][0] == allCards[i][0]:
                                 return data['min_bid'] * 3
 
 
             #one pair and two pairs
-            for i in range(0, howManyBoardCards):
-                for j in range(1, howManyBoardCards):
+            for i in range(0, howManyCards):
+                for j in range(1, howManyCards):
                     if allCards[i][0] == allCards[j][0]:
                         allCards.pop([i])
                         allCards.pop([j])
-                        howManyBoardCards = len(allCards)
-                        for k in range(0, howManyBoardCards):
-                            for l in range(0, howManyBoardCards):
+                        howManyCards = len(allCards)
+                        for k in range(0, howManyCards):
+                            for l in range(0, howManyCards):
                                 if allCards[k][0] == allCards[l][0]:
                                     return data['min_bid'] * 2
                         return data['min_bid']
@@ -119,6 +201,7 @@ class PokerPlayerAPI(Resource):
 
         return data['min_bid']
     # dispatch incoming get commands
+
     def get(self, command_id):
 
         data = request.form['data']
