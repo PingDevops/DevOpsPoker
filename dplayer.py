@@ -67,8 +67,23 @@ class PokerPlayerAPI(Resource):
     #         bid  : a number between 0 and max_bid
     def __get_bid(self, data):
 
-        return 0
+        allCards = data['hand'] + data['board']
 
+        searchRank = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"]
+
+        howManyBoardCards = len(allCards)
+
+        #for i in range(0, 2+howManyBoardCards):
+
+
+        for i in range(0, howManyBoardCards):
+            for j in range(1, howManyBoardCards):
+                if allCards['rank'][i] == allCards['rank'][j]:
+                    return data['min_bid']
+
+
+
+        return 0
     # dispatch incoming get commands
     def get(self, command_id):
 
