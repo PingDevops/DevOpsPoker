@@ -79,7 +79,7 @@ class PokerPlayerAPI(Resource):
             for i in range(0, howManyBoardCards):
                 for j in range(0, howManyBoardCards):
                     for k in range(0, howManyBoardCards):
-                        if allCards[i][0] == allCards[j][0] & allCards[j][0] == allCards[k][0]
+                        if allCards[i][0] == allCards[j][0] & allCards[j][0] == allCards[k][0]:
                             return data['min_bid'] * 3
 
             #one pair and two pairs
