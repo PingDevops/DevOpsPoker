@@ -66,6 +66,57 @@ class PokerPlayerAPI(Resource):
     # @return a dictionary containing the following values
     #         bid  : a number between 0 and max_bid
 
+    def Pairs(self, allCards, howManyCards, data):
+        for i in range(0, howManyCards):
+            for j in range(1, howManyCards):
+                if allCards[i][0] == allCards[j][0]:
+                    allCards.pop([i])
+                    allCards.pop([j])
+                    howManyCards = len(allCards)
+                    for k in range(0, howManyCards):
+                        for l in range(0, howManyCards):
+                            if allCards[k][0] == allCards[l][0]:
+                                print('A Pair of Two')
+                                return 2
+                    print('A Pair of One')
+                    return 1
+
+    def threeOfAKind(self, allCards, howManyCards, data):
+        for i in range(0, howManyCards):
+            for j in range(0, howManyCards):
+                for k in range(0, howManyCards):
+                    if allCards[k][0] == allCards[j][0]:
+                        if allCards[j][0] == allCards[i][0]:
+                            print('Three of a Kind')
+                            return True
+
+    def fullHouse(self, allCards, howManyCards, data):
+        for i in range(0, howManyCards):
+            for j in range(0, howManyCards):
+                for k in range(0, howManyCards):
+                    if allCards[k][0] == allCards[j][0]:
+                        if allCards[j][0] == allCards[i][0]:
+                            allCards.pop([i])
+                            allCards.pop([j])
+                            allCards.pop([k])
+                            howManyCards = len(allCards)
+                            for i in range(0, howManyCards):
+                                for j in range(1, howManyCards):
+                                    if allCards[i][0] == allCards[j][0]:
+                                        print('Full House')
+                                        return True
+
+    def fourOfAKind(self, allCards, howManyCards, data):
+        for i in range(0, howManyCards):
+            for j in range(0, howManyCards):
+                for k in range(0, howManyCards):
+                    for l in range(0, howManyCards):
+                        if allCards[l][0] == allCards[k][0]:
+                            if allCards[k][0] == allCards[j][0]:
+                                if allCards[j][0] == allCards[i][0]:
+                                    print('Four of a Kind')
+                                    return True
+
     def straightFlush(self, cards, indicator = 0):
         length = len(cards)
         searchRank = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"]
@@ -164,31 +215,12 @@ class PokerPlayerAPI(Resource):
 
 
             #four of a Kind
-            for i in range(0, howManyCards):
-                for j in range(0, howManyCards):
-                    for k in range(0, howManyCards):
-                        for l in range(0, howManyCards):
-                            if allCards[l][0] == allCards[k][0]:
-                                if allCards[k][0] == allCards[j][0]:
-                                    if allCards[j][0] == allCards[i][0]:
-                                        print('Four of a Kind')
-                                        return data['min_bid'] * 5
+            if self.fourOfAKind(allCards, howManyCards, data):
+                return data['min_bid'] * 5
 
             #full house
-            for i in range(0, howManyCards):
-                for j in range(0, howManyCards):
-                    for k in range(0, howManyCards):
-                        if allCards[k][0] == allCards[j][0]:
-                            if allCards[j][0] == allCards[i][0]:
-                                allCards.pop([i])
-                                allCards.pop([j])
-                                allCards.pop([k])
-                                howManyCards = len(allCards)
-                                for i in range(0, howManyCards):
-                                    for j in range(1, howManyCards):
-                                        if allCards[i][0] == allCards[j][0]:
-                                            print('Full House')
-                                            return data['min_bid'] * 4
+            if self.fullHouse(allCards, howManyCards, data):
+                return data['min_bid'] * 4
 
             #straight
             if self.straightFlush(allCards):
@@ -196,29 +228,15 @@ class PokerPlayerAPI(Resource):
                 return data['min_bid'] * 4
 
             #three of a kind
-            for i in range(0, howManyCards):
-                for j in range(0, howManyCards):
-                    for k in range(0, howManyCards):
-                        if allCards[k][0] == allCards[j][0]:
-                            if allCards[j][0] == allCards[i][0]:
-                                print('Three of a Kind')
-                                return data['min_bid'] * 3
-
+            if self.threeOfAKind(allCards, howManyCards, data):
+                return data['min_bid'] * 3
 
             #one pair and two pairs
-            for i in range(0, howManyCards):
-                for j in range(1, howManyCards):
-                    if allCards[i][0] == allCards[j][0]:
-                        allCards.pop([i])
-                        allCards.pop([j])
-                        howManyCards = len(allCards)
-                        for k in range(0, howManyCards):
-                            for l in range(0, howManyCards):
-                                if allCards[k][0] == allCards[l][0]:
-                                    print('A Pair of Two')
-                                    return data['min_bid'] * 2
-                        print('A Pair of One')
-                        return data['min_bid']
+            if self.Pairs(allCards, howManyCards, data) == 2:
+                return data['min_bid'] * 2
+            elif self.Pairs(allCards, howManyCards, data) == 1:
+                return data['min_bid']
+
         except ValueError:
             return data['min_bid']
 
