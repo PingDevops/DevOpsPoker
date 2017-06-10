@@ -128,7 +128,7 @@ class PokerPlayerAPI(Resource):
 
             ##straight flush and flush
             if len(spades) >= 5:
-                if self.straightFlush(self, spades):
+                if self.straightFlush(spades):
                     return data['min_bid'] * 6
                 return data['min_bid'] * 3
 
@@ -137,12 +137,12 @@ class PokerPlayerAPI(Resource):
                 #royal flush
                 if self.straightFlush(self, hearts, 8):
                     return data['min_bid'] * 8
-                elif self.straightFlush(self, hearts):
+                elif self.straightFlush(hearts):
                     return data['min_bid'] * 6
                 return data['min_bid'] * 3
 
             if len(diamonds) >= 5:
-                if self.straightFlush(self, diamonds):
+                if self.straightFlush(diamonds):
                     return data['min_bid'] * 6
                 return data['min_bid'] * 3
 
@@ -182,7 +182,7 @@ class PokerPlayerAPI(Resource):
             #flush
 
             #straight
-            if self.straightFlush(self, allCards):
+            if self.straightFlush(allCards):
                 return data['min_bid'] * 4
 
             #three of a kind
