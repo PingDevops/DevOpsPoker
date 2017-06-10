@@ -8,7 +8,7 @@
 # -----------------------------------------------------------
 # Configuration
 # You need to change the setting according to your environment
-gregister_url='http://localhost:5001'
+gregister_url='http://192.168.0.5:5001'
 glocalip_adr='127.0.0.1'
 
 # -----------------------------------------------------------
