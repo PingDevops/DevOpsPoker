@@ -72,15 +72,19 @@ class PokerPlayerAPI(Resource):
 
         searchRank = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"]
 
-        #straight
+
 
         try:
+            # straight
+
+
             #three of a kind
             for i in range(0, howManyBoardCards):
                 for j in range(0, howManyBoardCards):
                     for k in range(0, howManyBoardCards):
-                        if allCards[i][0] == allCards[j][0] & allCards[j][0] == allCards[k][0]:
-                            return data['min_bid'] * 3
+                        if allCards[i][0] == allCards[j][0]:
+                            if allCards[j][0] == allCards[k][0]:
+                                return data['min_bid'] * 3
 
             #one pair and two pairs
             for i in range(0, howManyBoardCards):
