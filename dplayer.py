@@ -73,7 +73,7 @@ class PokerPlayerAPI(Resource):
         searchRank = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"]
 
         #straight
-        
+
 
         #three of a kind
         for i in range(0, howManyBoardCards):
@@ -96,7 +96,7 @@ class PokerPlayerAPI(Resource):
                     return data['min_bid']
 
 
-        return -1
+        return data['min_bid']
     # dispatch incoming get commands
     def get(self, command_id):
 
