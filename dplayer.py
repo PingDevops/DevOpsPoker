@@ -83,8 +83,8 @@ class PokerPlayerAPI(Resource):
 
     def threeOfAKind(self, allCards, howManyCards, data):
         for i in range(0, howManyCards):
-            for j in range(0, howManyCards):
-                for k in range(0, howManyCards):
+            for j in range(1, howManyCards):
+                for k in range(2, howManyCards):
                     if allCards[k][0] == allCards[j][0]:
                         if allCards[j][0] == allCards[i][0]:
                             print('Three of a Kind')
@@ -92,8 +92,8 @@ class PokerPlayerAPI(Resource):
 
     def fullHouse(self, allCards, howManyCards, data):
         for i in range(0, howManyCards):
-            for j in range(0, howManyCards):
-                for k in range(0, howManyCards):
+            for j in range(1, howManyCards):
+                for k in range(2, howManyCards):
                     if allCards[k][0] == allCards[j][0]:
                         if allCards[j][0] == allCards[i][0]:
                             allCards.pop([i])
@@ -108,9 +108,9 @@ class PokerPlayerAPI(Resource):
 
     def fourOfAKind(self, allCards, howManyCards, data):
         for i in range(0, howManyCards):
-            for j in range(0, howManyCards):
-                for k in range(0, howManyCards):
-                    for l in range(0, howManyCards):
+            for j in range(1, howManyCards):
+                for k in range(2, howManyCards):
+                    for l in range(3, howManyCards):
                         if allCards[l][0] == allCards[k][0]:
                             if allCards[k][0] == allCards[j][0]:
                                 if allCards[j][0] == allCards[i][0]:
